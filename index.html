@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CML101 Course Material</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Course materials and tutorials for CML101.">
+    <meta name="author" content="Monil">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+
+    
+    <style>
+    body {
+        background-image: url('https://imgs.search.brave.com/KtDO2B7GVofNI1pTk7NGPAlMNy2N3tswq_s--aT5xyk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/d2FsbHBhcGVyc2Fm/YXJpLmNvbS80OC82/MC8zcmZKQTUuanBn');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        margin: 0;
+        padding: 0;
+        font-family: 'Roboto', Arial, sans-serif;
+        color: white;
+    }
+
+    h1, h2 {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    h1 {
+        font-size: 3em;
+        color: #FFD700;
+        text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7), 0 0 20px #FF4500;
+        animation: glow 1.5s infinite alternate;
+        background: linear-gradient(90deg, #FF6347, #FFD700, #32CD32);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    h2 {
+        font-size: 2em;
+    }
+
+    .dropdown {
+        margin: 20px auto;
+        background-color: rgba(255, 255, 255, 0.9);
+        color: #333;
+        border-radius: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        transition: margin-bottom 0.3s ease;
+        width: 90%; /* Adjust width for smaller screens */
+        max-width: 800px; /* Limit the maximum width */
+    }
+
+    .dropdown-header {
+        padding: 12px 20px;
+        font-size: 1.2em;
+        font-weight: bold;
+        background-color: #62a4e9;
+        color: white;
+        cursor: pointer;
+        text-align: center;
+        border-radius: 10px;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .dropdown-header:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+
+    .dropdown-content {
+        max-height: 0;
+        overflow: hidden;
+        background-color: rgba(26, 86, 135, 0.8);
+        transition: max-height 0.5s ease;
+    }
+
+    .dropdown-content.open {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    .dropdown-content a {
+        display: block;
+        padding: 10px;
+        color: white;
+        text-decoration: none;
+        text-align: center;
+        background-color: #0a5068;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown-content a:hover {
+        background-color: #0056b3;
+    }
+
+    .dropdown-content::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .dropdown-content::-webkit-scrollbar-thumb {
+        background-color: #62a4e9;
+        border-radius: 10px;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+        .dropdown-header {
+            font-size: 1em; /* Reduce font size for smaller screens */
+        }
+
+        .dropdown-content a {
+            font-size: 0.9em; /* Reduce link size for smaller screens */
+            padding: 8px; /* Reduce padding for smaller screens */
+        }
+
+        h1 {
+            font-size: 2em; /* Adjust heading size for smaller screens */
+        }
+
+        h2 {
+            font-size: 1.5em; /* Adjust subheading size for smaller screens */
+        }
+    }
+</style>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const outerDropdowns = document.querySelectorAll('.dropdown.outer');
+
+            outerDropdowns.forEach(outer => {
+                const outerHeader = outer.querySelector('.dropdown-header');
+                const outerContent = outer.querySelector('.dropdown-content');
+
+                outerHeader.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const isOpen = outerContent.classList.contains('open');
+                    closeAllDropdowns();
+                    if (!isOpen) {
+                        outerContent.classList.add('open');
+                    }
+                });
+
+                const innerDropdowns = outer.querySelectorAll('.dropdown.inner');
+                innerDropdowns.forEach(inner => {
+                    const innerHeader = inner.querySelector('.dropdown-header');
+                    const innerContent = inner.querySelector('.dropdown-content');
+
+                    innerHeader.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        const isOpen = innerContent.classList.contains('open');
+                        closeInnerDropdowns(outer);
+                        if (!isOpen) {
+                            innerContent.classList.add('open');
+                        }
+                    });
+
+                    const innerMostDropdowns = inner.querySelectorAll('.dropdown.inner-most');
+                    innerMostDropdowns.forEach(innerMost => {
+                        const innerMostHeader = innerMost.querySelector('.dropdown-header');
+                        const innerMostContent = innerMost.querySelector('.dropdown-content');
+
+                        innerMostHeader.addEventListener('click', (event) => {
+                            event.stopPropagation();
+                            const isOpen = innerMostContent.classList.contains('open');
+                            closeInnerMostDropdowns(inner);
+                            if (!isOpen) {
+                                innerMostContent.classList.add('open');
+                            }
+                        });
+                    });
+                });
+            });
+
+            function closeAllDropdowns() {
+                document.querySelectorAll('.dropdown-content').forEach(content => {
+                    content.classList.remove('open');
+                });
+            }
+
+            function closeInnerDropdowns(outer) {
+                outer.querySelectorAll('.dropdown.inner .dropdown-content').forEach(content => {
+                    content.classList.remove('open');
+                });
+            }
+
+            function closeInnerMostDropdowns(inner) {
+                inner.querySelectorAll('.dropdown.inner-most .dropdown-content').forEach(content => {
+                    content.classList.remove('open');
+                });
+            }
+
+            document.addEventListener('click', () => {
+                closeAllDropdowns();
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1><a href="https://dalla111.github.io/homepage/" ><img src="https://jwalamukhi.iitd.ac.in/images/Jwala_logo_extra_small_2.png" alt="Logo" ></a>CML101 Course Material</h1>
+    <div class="container">
+        <div class="section">
+            <div class="dropdown outer">
+                <div class="dropdown-header">SEM-1 | LECTURES</div>
+                <div class="dropdown-content">
+                    <div class="dropdown inner">
+                
+                        <div class="dropdown-header">CHEMICAL KINETICS</div>
+                        <div class="dropdown-content">
+                            <a href="https://docs.google.com/presentation/d/1q6HMNyxw-C1DbvGz9Ax-2GtC-taAYHbI/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">LECTURE -1 </a>
+                            <a href="https://docs.google.com/presentation/d/1aGmIj5VnhpMBWErREz3bqsqNHyLDawlG/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">LECTURE -2</a>
+                            <a href="https://docs.google.com/presentation/d/1xg2fC7EReKL81vXPiGPbd2EPGH9cnj7Y/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">LECTURE -3</a>  
+                            <a href="https://docs.google.com/presentation/d/1bZBW55HtWEQTBILt9WiSc_ttFP1tycPt/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">LECTURE -4</a>
+                            <a href="https://docs.google.com/presentation/d/1O9zF2HSjVFjFA_1FzHrG5kDMY2_25xiu/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">LECTURE -5</a>
+                            <a href="https://docs.google.com/presentation/d/1YVzUL4EIMRB2b6DWtQF4cNMd4pqNPKvu/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">LECTURE -6</a>
+                            
+                            
+                        </div>
+                        </div>
+                        <div class="dropdown inner">
+                        <div class="dropdown-header">QUANTUM MECHANICS</div>
+                        <div class="dropdown-content">
+                            <a href="https://docs.google.com/presentation/d/1DnLSKrJbT60rYF8OS7rCTZRsG0P--oB_/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">LECTURE -1 </a>
+                            <a href="https://docs.google.com/presentation/d/1a0TAJblH1KtyOW1ozGdmLNxhBIxA6q5v/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">LECTURE -2</a>
+                            <a href="https://docs.google.com/presentation/d/1xblRavy03TZZ0H0ApYXwq_FzgpHVALJx/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">LECTURE -3</a>  
+                            <a href="https://docs.google.com/presentation/d/1X_PUXetiIbmCEL3BHaiHjGJ8HHmnP1st/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">LECTURE -4</a>
+                            <a href="https://docs.google.com/presentation/d/1Pe9jYzCVBemq3X2x3NjXlUC2WKzhC5Vb/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">LECTURE -5</a>
+                            <a href="https://docs.google.com/presentation/d/195pTT3h03NrOf-LR9UFxchLhbf2ySEQR/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">LECTURE -6</a>
+                            <a href="https://docs.google.com/presentation/d/1DK-Ov6sUgv2_yA_TXU4PB_ClJtlMhZwE/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">LECTURE -7</a>
+                            <a href="https://docs.google.com/presentation/d/1K1zficnZGQ9BaqAoQbed9dqAwrE2K0aq/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">LECTURE -8</a>
+                            <a href="https://docs.google.com/presentation/d/1b6HIGJT-aASp4umz4C3xVbakDhSuz7hg/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">LECTURE -9</a>
+                            <a href="https://drive.google.com/file/d/1kJ5dQmNMbEVfWLdUTUe_eWQA-4UmH5v5/view?usp=drive_link">LECTURE -10</a>
+                            <a href="https://docs.google.com/presentation/d/1tXfYBBiWqOMk18Db4SaOQwU0gEu3p_sY/edit?usp=drive_link&ouid=103228566671420085638&rtpof=true&sd=true">SEPARATION OF VARIABLE</a>
+
+                            
+                            
+                        </div>
+                        </div>
+                        <div class="dropdown inner">
+                        <div class="dropdown-header">INORGANIC CHEMISTRY</div>
+                        <div class="dropdown-content">
+                            <a href="https://drive.google.com/file/d/1JcZY7L4GkS78ZGwv6iTh_GvIIU2wfRra/view?usp=drive_link">LECTURE -1 </a>
+                            <a href="https://drive.google.com/file/d/1kZ8NvPlLiwjg6gJ39WJbVJD4FgeOZgw5/view?usp=drive_link">LECTURE -2</a>
+                            <a href="https://drive.google.com/file/d/1LI0tDvYSH5zwqwIT1nizcS44SdUCCly2/view?usp=drive_link">LECTURE -3</a>  
+                            <a href="https://drive.google.com/file/d/101PJc4HQx-CS_sONMi1kJRlIskXYBv0_/view?usp=drive_link">LECTURE -4</a>
+                            <a href="https://drive.google.com/file/d/1q9UTPN2Wgf9t8YnvGYRMTW6FA-auScIL/view?usp=drive_link">LECTURE -5</a>
+                            <a href="https://drive.google.com/file/d/1OvNbMyAWbDGAFSZA--wHHajraHuABQv1/view?usp=drive_link">LECTURE -6</a>
+                            <a href="https://drive.google.com/file/d/1jFvo4AYpSEDNR4B9uT7crCNBS3H4sQ5t/view?usp=drive_link">LECTURE -7</a>
+                            <a href="https://drive.google.com/file/d/14qPC-4c7Xm27PNCYzj1OrvqI_eRAHZmE/view?usp=drive_link">LECTURE -8</a>
+                            <a href="https://drive.google.com/file/d/19wvalkc6zzafr5LSSIqONTIX43Owil7j/view?usp=drive_link">LECTURE -9</a>
+                            <a href="https://drive.google.com/file/d/1dV6yo9JkklYvclsePsoJmrKPvAJbZ1-E/view?usp=drive_link">LECTURE -10</a>
+                            
+
+                            
+                        </div>
+                        </div>
+                        <div class="dropdown inner">
+                        <div class="dropdown-header">ORGANIC CHEMISTRY</div>
+                        <div class="dropdown-content">
+                            <a href="https://drive.google.com/file/d/1kLsd6mB3i5JL43ApZkP0DayB1w6z0VfX/view?usp=drive_link">LECTURE -1 </a>
+                            <a href="https://drive.google.com/file/d/1K2973zzHEfZhNawpUL7NNjHpcSyklvMK/view?usp=drive_link">LECTURE -2</a>
+                            <a href="https://drive.google.com/file/d/1VgGbZKrU-ghxSWKkJnbAs6WCIiVlfh6F/view?usp=drive_link">LECTURE -3/4</a>  
+                            <a href="https://drive.google.com/file/d/15lSnEZxyDmBAwFs99i4JEJ80A7TJlg1m/view?usp=drive_link">LECTURE -5</a>
+                            <a href="https://drive.google.com/file/d/1BE8yyfShAkuiUAvrmc1Gkg-93Irdo7aU/view?usp=drive_link">LECTURE -6</a>
+                            <a href="https://drive.google.com/file/d/1hBrWXO6W2tSkwjpzlLEczKmazz25hQz2/view?usp=drive_link">LECTURE -7/8</a>
+                            
+                            <a href="https://drive.google.com/file/d/1zl20W3KifeXvIB-dfuxXYE9RrfM6YOjQ/view?usp=drive_link">LECTURE -9</a>
+                            <a href="https://drive.google.com/file/d/1zXHTWM60IixAclCPqoNZMfb-YaDejHbr/view?usp=drive_link">LECTURE -10</a>
+                            <a href="https://drive.google.com/file/d/1JiEfkw-2emth0KTq6_SLBqYRXoUM7Sbp/view?usp=drive_link">LECTURE -11</a>
+                            <a href="https://drive.google.com/file/d/1tbzKyJndsrEIzneBIH6TYJW21Cl0pGpy/view?usp=drive_link">LECTURE -12</a>
+                            <a href="https://drive.google.com/file/d/1F4Rvh_a4P8INyWzFVj4EKY8eEd1UeVWt/view?usp=drive_link">LECTURE -13</a>
+                            <a href="https://drive.google.com/file/d/1qSKGnmGxkTrg0tSZF7eL59ijGbaynWYj/view?usp=drive_link">LECTURE -14</a>
+
+                            
+
+                            
+                        </div>
+                        </div>
+                    </div>
+                    
+                   
+                </div>
+                      
+            </div>
+            
+            <div class="dropdown outer">
+                <div class="dropdown-header">SEM-1 | TUTORIALS</div>
+                <div class="dropdown-content">
+                    <a href="https://drive.google.com/file/d/1aDxtWiRPOJtp0gh4pWjkUrlf2gc8lxd0/view?usp=drive_link"> CK TUTORIAL 1</a>
+                    <a href="https://drive.google.com/file/d/1_RmGDvQ_zILNxtXTZZTAb92BMULeBhNg/view?usp=drive_link"> CK TUTORIAL 1 SOLUTIONS PART 1</a>
+                    <a href="https://drive.google.com/file/d/10v1kIDweIWvPOylP1598jp9F5JG53_yi/view?usp=drive_link"> CK TUTORIAL 1 SOLUTIONS PART 2</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/438005/mod_resource/content/1/CML101%20Tutorial%20on%20Quantum%20Mechanics_Part%20I.pdf">Quantum Mechanics Tutorial Part I File</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/439473/mod_resource/content/1/Quantum%20Mechanics%20Tutorial%20Part%20II.pdf">Quantum Mechanics Tutorial Part II File</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/440086/mod_resource/content/1/Solutions%20to%20CML101%20Quantum%20Tutorial%20Part%20I.pdf">Quantum Tutorial Part I SolutionsFile</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/440951/mod_resource/content/1/Quantum%20Tutorial%20Part%20II%20Solutions.pdf">Quantum Tutorial Part II SolutionsFile</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/439944/mod_resource/content/3/Tutorial%201_2024_I%20sem.pdf">Inorganic Chemistry Tutorial 1 QuestionsFile</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/441408/mod_resource/content/1/Inorganic%20Chemistry%20Tutorial%201_answer%20key.pdf">Inorganic Chemistry Tutorial 1 SOLUTIONFile</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/439944/mod_resource/content/3/Tutorial%201_2024_I%20sem.pdf">Inorganic Chemistry Tutorial 2 QuestionsFile</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/441606/mod_resource/content/1/Inorganic%20Chemistry%20Tutorial%202_Answer%20Key.pdf">Inorganic Chemistry Tutorial 2 SOLUTIONFile</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/441885/mod_resource/content/1/Tutorial%203_2024_I%20sem.pdf">Inorganic Chemistry Tutorial 3 QuestionsFile</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/443617/mod_resource/content/1/Inorganic%20Chemistry%20Tutorial%203_Answer%20Key.pdf">Inorganic Chemistry Tutorial 3 SOLUTIONFile</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/442246/mod_resource/content/1/Tutorial%204_2024_I%20sem.pdf">Inorganic Chemistry Tutorial 4 QuestionsFile</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/443618/mod_resource/content/1/Inorganic%20Chemistry%20Tutorial%204_Answer%20Key.pdf">Inorganic Chemistry Tutorial 4 SOLUTIONFile</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/443987/mod_resource/content/1/Organic%20Tutorial-1.pdf">Organic Tutorial-1File</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/444664/mod_resource/content/1/Tutorial-1-answers.pdf">Organic Tutorial-1SOLUTIONS</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/444661/mod_resource/content/1/Tutorial-2.pdf">Organic Tutorial-2File</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/444664/mod_resource/content/1/Tutorial-2-answers.pdf">Organic Tutorial-2SOLUTIONS</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/445027/mod_resource/content/1/Tutorial-3.pdf">Organic Tutorial-3File</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/444664/mod_resource/content/1/Tutorial-3-answers.pdf">Organic Tutorial-3SOLUTIONS</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/445876/mod_resource/content/1/Organic%20Tutorial-4.pdf">Organic Tutorial-3File</a>
+                    <a href="https://moodle.iitd.ac.in/pluginfile.php/446321/mod_resource/content/1/Tutorial-4%20Answers.pdf">Organic Tutorial-3SOLUTIONS</a>
+                    
+                </div>
+            </div>
+            <div class="dropdown outer">
+                <div class="dropdown-header">SEM-2 | LECTURES</div>
+                <div class="dropdown-content">
+                    <div class="dropdown inner">
+                        <div class="dropdown-header">CHEMICAL KINETICS</div>
+                        <div class="dropdown-content">
+                            <a href="https://drive.google.com/file/d/1u_WQUPidTcmtTb_gdaKeqE78FgmkK6r9/view?usp=drive_link"> CK Lecture 1-2</a>
+                            <a href="https://drive.google.com/file/d/1lbDsLn1L-merwTZR6PgU61Dnkeg9KMcJ/view?usp=drive_link"> CK Lecture 3</a>
+                            <a href="https://drive.google.com/file/d/1W8DPZV2JSdNXkd0J-Zm_q6IDswCTWfJJ/view?usp=drive_link"> CK Lecture 4-7</a>  
+                        </div>
+                    </div>
+                    <div class="dropdown inner">
+                    <div class="dropdown-header">Quantum</div>
+                    <div class="dropdown-content">
+                    <a href="https://drive.google.com/file/d/1NPc5dszPtgJOg4gAHedFT8UrYHseX28Q/view?usp=drive_link"> Quantum LEC 1-2</a>
+                    
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="dropdown outer">
+                <div class="dropdown-header">SEM-2 | TUTORIALS</div>
+                <div class="dropdown-content">
+                    <a href="https://drive.google.com/file/d/1dJhU5s2LoV_6WCh63EVsEt5e-pYCJUiv/view?usp=drive_link"> CK TUTORIAL 1</a>
+                    <a href="https://drive.google.com/file/d/1a19Fv7lz4dzgE5Woi06uVD7X90bNZzfC/view?usp=drive_link"> CK TUTORIAL 1 SOLUTIONS PART 1</a>
+                    <a href="https://drive.google.com/file/d/1EWps3hNlsrWf4nq2SniCkSawqTvEgIWf/view?usp=drive_link"> Quantum TUTORIAL 1</a>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="dropdown outer">
+                <div class="dropdown-header">OTHER TUTORIALS WITH SOLUTIONS (2021)</div>
+                <div class="dropdown-content">
+                    <a href="https://drive.google.com/file/d/1rnJ3HntcXuqW8QcQAo4utM-nuMolYgWc/view?usp=drive_link"> TUTORIAL 1</a>
+                    <a href="https://drive.google.com/file/d/1kBDbXc-WRT0EBp0HUzmiFr7PhD1t8jn3/view?usp=drive_link"> TUTORIAL 1 Solutions</a>
+                    <a href="https://drive.google.com/file/d/1tbs2_uGM9B-j-9_EP3wMShfSGx9EO_Sj/view?usp=drive_link"> TUTORIAL 2</a>
+                    <a href="https://drive.google.com/file/d/1SbhgFIJlS14ZSDPYr7VcqO7RrLf5G46f/view?usp=drive_link"> TUTORIAL 2 Solution</a>
+                    <a href="https://drive.google.com/file/d/1_mTr3RXoY2JIcM48YlnukOZmd0r08Cvc/view?usp=drive_link"> TUTORIAL 3</a>
+                    <a href="https://drive.google.com/file/d/1ymeA0YXikncL3R8L_4UiBW1bwbdiPJFV/view?usp=drive_link"> TUTORIAL 3 Solution</a>
+                    <a href="https://drive.google.com/file/d/1NfMwZxa6rJbEWgsWCY3zhDpQLrT_8Be5/view?usp=drive_link"> TUTORIAL 4</a>
+                    <a href="https://drive.google.com/file/d/1ojqZXQMNAcq9TuWS57nLB4sMf01Pmvpu/view?usp=drive_link"> TUTORIAL 4 Solution</a>
+                </div>
+            </div>
+
+            
+            
+            
+            
+        </div>
+        <footer>
+            <p>&copy; ALL RIGHTS RESERVED</p>
+            <p><a href="mailto:monilsavaliya416@gmail.com" style="color: white;">Contact for changes</a></p>
+        </footer>
+    </div>
+</body>
+</html>
